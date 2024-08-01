@@ -10,7 +10,7 @@ body html .root {
     background-color: black;
     box-shadow: 0 10px 10px -6px;
     position: relative;
-    right: 0px;
+    left: 0px;
     height: 50px;
     width: 50px;
     border-radius: 25px;

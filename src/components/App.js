@@ -7,7 +7,7 @@ class App extends Component {
         this.state = {
             renderBall: false,
             posi : 0,
-            ballPosition: { right: "0px" }
+            ballPosition: { left: "0px" }
         };
         this.renderChoice = this.renderBallOrButton.bind(this);
         this.buttonClickHandler = this.buttonClickHandler.bind(this);
@@ -31,7 +31,7 @@ class App extends Component {
             const newPos = prevState.posi + 5;
             return {
               posi: newPos,
-              ballPosition: { right: `${newPos}px` },
+              ballPosition: { left: `${newPos}px` },
             };
           });
         }
