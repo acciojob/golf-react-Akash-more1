@@ -17,6 +17,7 @@ class App extends Component {
 
     buttonClickHandler() {
     this.setState({renderBall: true});
+    this.playgroundRef.current.focus();
    }
     renderBallOrButton() {
 		if (this.state.renderBall) {
@@ -41,6 +42,7 @@ class App extends Component {
     // bind ArrowRight keydown event
     componentDidMount() {
         this.playgroundRef.current.addEventListener("keydown", this.handleKeyDown);
+        this.playgroundRef.current.focus();
   }
 
   componentWillUnmount() {
