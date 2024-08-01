@@ -49,7 +49,7 @@ class App extends Component {
 
     render() {
         return (
-            <div ref={this.playgroundRef} className="playground" >
+            <div ref={this.playgroundRef} className="playground" tabIndex="0">
                 {this.renderBallOrButton()}
             </div>
         )
