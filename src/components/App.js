@@ -1,62 +1,50 @@
-import React, { Component, useState, createRef } from "react";
-import '../styles/App.css';
+import React, { useState, useRef, useEffect } from "react";
+import "../styles/App.css";
 
-class App extends Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            renderBall: false,
-            posi : 0,
-            ballPosition: { left: "0px" }
-        };
-        this.playgroundRef = createRef(); 
-        this.renderChoice = this.renderBallOrButton.bind(this);
-        this.buttonClickHandler = this.buttonClickHandler.bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
-    };
+const App = () => {
+  const [renderBall, setRenderBall] = useState(false);
+  const [posi, setPosi] = useState(0);
+  const [ballPosition, setBallPosition] = useState({ left: "0px" });
+  const playgroundRef = useRef(null);
 
-    buttonClickHandler() {
-    this.setState({renderBall: true});
-    this.playgroundRef.current.focus();
-   }
-    renderBallOrButton() {
-		if (this.state.renderBall) {
-		    return <div className="ball" style={this.state.ballPosition}></div>
-		} else {
-		    return <button className="start" onClick={this.buttonClickHandler} >Start</button>
-		}
+  const buttonClickHandler = () => {
+    setRenderBall(true);
+    playgroundRef.current.focus();
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'ArrowRight' && event.keyCode === 39) {
+      setPosi((prevPosi) => {
+        const newPos = prevPosi + 5;
+        setBallPosition({ left: `${newPos}px` });
+        return newPos;
+      });
     }
+  };
 
-    handleKeyDown(event) {
-        if (event.key === 'ArrowRight' && event.keyCode === 39) {
-          this.setState((prevState) => {
-            const newPos = prevState.posi + 5;
-            return {
-              posi: newPos,
-              ballPosition: { left: `${newPos}px` },
-            };
-          });
-        }
-      }
-
-    // bind ArrowRight keydown event
-    componentDidMount() {
-        this.playgroundRef.current.addEventListener("keydown", this.handleKeyDown);
-        this.playgroundRef.current.focus();
-  }
-
-  componentWillUnmount() {
-    this.playgroundRef.current.removeEventListener("keydown", this.handleKeyDown);
-  }
-
-    render() {
-        return (
-            <div ref={this.playgroundRef} className="playground" tabIndex="0">
-                {this.renderBallOrButton()}
-            </div>
-        )
+  useEffect(() => {
+    const currentRef = playgroundRef.current;
+    if (currentRef) {
+      currentRef.addEventListener("keydown", handleKeyDown);
+      return () => {
+        currentRef.removeEventListener("keydown", handleKeyDown);
+      };
     }
-}
+  }, []); // Empty dependency array to mimic componentDidMount and componentWillUnmount
 
+  const renderBallOrButton = () => {
+    if (renderBall) {
+      return <div className="ball" style={ballPosition}></div>;
+    } else {
+      return <button className="start" onClick={buttonClickHandler}>Start</button>;
+    }
+  };
+
+  return (
+    <div ref={playgroundRef} className="playground" tabIndex="0">
+      {renderBallOrButton()}
+    </div>
+  );
+};
 
 export default App;
