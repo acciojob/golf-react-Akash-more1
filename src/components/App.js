@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useState, createRef } from "react";
 import '../styles/App.css';
 
 class App extends Component {
@@ -9,6 +9,7 @@ class App extends Component {
             posi : 0,
             ballPosition: { left: "0px" }
         };
+        this.playgroundRef = createRef(); 
         this.renderChoice = this.renderBallOrButton.bind(this);
         this.buttonClickHandler = this.buttonClickHandler.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -39,16 +40,16 @@ class App extends Component {
 
     // bind ArrowRight keydown event
     componentDidMount() {
-    document.addEventListener("keydown", this.handleKeyDown);
+        this.playgroundRef.current.addEventListener("keydown", this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("keydown", this.handleKeyDown);
+    this.playgroundRef.current.removeEventListener("keydown", this.handleKeyDown);
   }
 
     render() {
         return (
-            <div className="playground">
+            <div ref={this.playgroundRef} className="playground" >
                 {this.renderBallOrButton()}
             </div>
         )
